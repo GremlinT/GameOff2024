@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -32,6 +29,7 @@ public class AlienBehavoiur : MonoBehaviour
         currentMoveToPoint = Vector3.zero;
     }
 
+    //методы обработчики пользовательского ввода
     public void MoveTo(Vector3 targetPosition)
     {
         if (currentState != AlienStates.use) ClearItem();
@@ -40,8 +38,9 @@ public class AlienBehavoiur : MonoBehaviour
 
     public void UseItem(UsableItem item)
     {
-        currentItem = item;
+        currentItem = item.SetCurrentItem();
     }
+    //----
 
     private void Update()
     {
@@ -67,6 +66,8 @@ public class AlienBehavoiur : MonoBehaviour
                     }
                     else
                     {
+                        currentItem.Use(this);
+                        agent.enabled = false;
                         currentState = AlienStates.use;
                     }
                 }
@@ -88,9 +89,10 @@ public class AlienBehavoiur : MonoBehaviour
                 }
                 break;
             case AlienStates.use:
+                Rotating();
                 if (currentMoveToPoint != Vector3.zero)
                 {
-                    if (currentItem.canStopManualy)
+                    if (currentItem.CanStopManualy())
                     {
                         ClearItem();
                     }
@@ -99,7 +101,11 @@ public class AlienBehavoiur : MonoBehaviour
                         currentMoveToPoint = Vector3.zero;
                     }
                 }
-                if (currentItem == null) currentState = AlienStates.idle;
+                if (currentItem == null)
+                {
+                    agent.enabled = true;
+                    currentState = AlienStates.idle;
+                }
                 break;
         }
     }
@@ -108,4 +114,34 @@ public class AlienBehavoiur : MonoBehaviour
     {
         currentItem = null;
     }
+
+    //методы для управления действиями персонажа вне стейтмашины
+    
+    //вращение в нужную сторону
+    [SerializeField]
+    private float rotateSpeed;
+    private Vector3 lookAtPoint;
+    private bool isRotating;
+
+    public void LookAt(Vector3 targetPositon) // - внешний метод
+    {
+        targetPositon.y = TR.position.y;
+        lookAtPoint = targetPositon;
+        isRotating = true;
+    }
+    private void Rotating() // - внутренний метод, вызывается в рамках статуса Use
+    {
+        if (isRotating)
+        {
+            if (Vector3.Angle(TR.forward, lookAtPoint - TR.position) > .5f)
+                TR.rotation = Quaternion.Lerp(TR.rotation, Quaternion.LookRotation(lookAtPoint - TR.position), Time.deltaTime * rotateSpeed);
+            else
+            {
+                lookAtPoint = Vector3.zero;
+                isRotating = false;
+            } 
+        }
+    }
+
+    //описание предмета
 }
