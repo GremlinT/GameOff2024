@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Phone : UsableItem
 {
-    public override void Use(AlienBehavoiur user)
+    /*public override void Use(AlienBehavoiur user)
+    {
+        Debug.Log("ping");
+        StartCoroutine(PhoneTalk());
+    }*/
+    public override void UseIndividual()
     {
         Debug.Log("ping");
         StartCoroutine(PhoneTalk());
@@ -12,6 +17,8 @@ public class Phone : UsableItem
 
     public override void StopUse()
     {
+        currentUser = null;
+        parentItem.StopUseChild();
         Debug.Log("stop");
     }
 

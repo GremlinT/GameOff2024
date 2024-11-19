@@ -1273,13 +1273,12 @@ MonoBehaviour:
   usePoint: {fileID: 0}
   cameraPoint: {fileID: 0}
   cameraTargetPoint: {fileID: 0}
-  treshold: 0
+  treshold: 1
   canStopManualy: 0
   basicInformation: 
   opinionDiscription: 
   dispalyedName: "\u0422\u0435\u043B\u0435\u0444\u043E\u043D"
   parentItem: {fileID: 1542615581}
-  childToUse: {fileID: 0}
 --- !u!1 &430563712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1862,7 +1861,6 @@ MonoBehaviour:
   opinionDiscription: 
   dispalyedName: "\u0428\u043A\u0430\u0444"
   parentItem: {fileID: 0}
-  childToUse: {fileID: 0}
 --- !u!1 &814777496
 GameObject:
   m_ObjectHideFlags: 0
@@ -2746,7 +2744,6 @@ MonoBehaviour:
   opinionDiscription: 
   dispalyedName: "\u0422\u0435\u043B\u0435\u0432\u0438\u0437\u043E\u0440"
   parentItem: {fileID: 0}
-  childToUse: {fileID: 0}
 --- !u!65 &1362254843
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7925,7 +7922,6 @@ MonoBehaviour:
     \u0441\u0442\u043E\u043B"
   dispalyedName: "\u041C\u043E\u0439 \u0441\u0442\u043E\u043B"
   parentItem: {fileID: 0}
-  childToUse: {fileID: 0}
 --- !u!1 &1719637714
 GameObject:
   m_ObjectHideFlags: 0
