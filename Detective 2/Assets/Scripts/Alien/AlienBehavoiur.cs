@@ -19,6 +19,9 @@ public class AlienBehavoiur : MonoBehaviour
     private UsableItem currentItem;
     [SerializeField]
     private Vector3 currentMoveToPoint;
+    [SerializeField]
+    private float standartTreshold;
+    private float currentTreshold;
 
     private void Start()
     {
@@ -38,7 +41,19 @@ public class AlienBehavoiur : MonoBehaviour
 
     public void UseItem(UsableItem item)
     {
-        currentItem = item.SetCurrentItem();
+        if (currentItem == null)
+        {
+            currentItem = item.SetCurrentItem();
+            currentTreshold = currentItem.SetItemTreshold();
+        }
+        else
+        {
+            if (currentItem != item.SetCurrentItem())
+            {
+                currentMoveToPoint = item.UsePoint();
+                currentTreshold = item.SetItemTreshold();
+            }
+        }
     }
     //----
 
@@ -68,6 +83,7 @@ public class AlienBehavoiur : MonoBehaviour
                     {
                         currentItem.Use(this);
                         agent.enabled = false;
+                        currentTreshold = standartTreshold;
                         currentState = AlienStates.use;
                     }
                 }
@@ -81,7 +97,7 @@ public class AlienBehavoiur : MonoBehaviour
                 {
                     agent.SetDestination(currentMoveToPoint);
                 }
-                if (Vector3.Distance(TR.position, agent.destination) < 0.1f)
+                if (Vector3.Distance(TR.position, agent.destination) < currentTreshold)
                 {
                     animator.SetBool("isWalking", false);
                     currentMoveToPoint = Vector3.zero;

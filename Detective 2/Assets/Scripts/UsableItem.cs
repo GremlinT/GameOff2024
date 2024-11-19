@@ -14,60 +14,96 @@ public class UsableItem : MonoBehaviour
     protected bool canStopManualy;
     [SerializeField]
     string basicInformation, opinionDiscription, dispalyedName;
-    [SerializeField]
-    private UsableItem parentItem;
-    public UsableItem childToUse;
-
+    
     protected AlienBehavoiur currentUser;
     private CameraScript currentCamera;
     private BaseUIBehavoiur UIBehavoiur;
+
+    [SerializeField]
+    protected UsableItem parentItem;
+    [SerializeField]
+    private UsableItem usedChildItem;
+
+    //метод, который вызывется после клика на предмет и который на выходе дает куррент итем для игрока, а также фиксирует в итемах порядок их использования
+    public UsableItem SetCurrentItem()
+    {
+        if (parentItem != null)
+        {
+            parentItem.usedChildItem = this;
+            return parentItem;
+        }
+        else return this;
+    }
 
     public void SetUIBehavoiur(BaseUIBehavoiur _UIBehavoiur)
     {
         UIBehavoiur = _UIBehavoiur;
     }
 
-    public UsableItem SetCurrentItem()
-    {
-        if (parentItem == null)
-        {
-            return this;
-        }
-        else
-        {
-            parentItem.childToUse = this;
-            return parentItem; 
-        }
-    }
+    //в use надо вызывать два метода ниже в зависимости от того есть или нет необходимость использовать дочерний объект 
     public virtual void Use(AlienBehavoiur user)
     {
         currentUser = user;
         UIBehavoiur.HideItemName();
+        UseIndividual();
+        if (usedChildItem != null) UseAsParent(usedChildItem);
+
+        //UIBehavoiur.HideItemName();
+        //currentCamera = FindObjectOfType<CameraScript>();
+        //currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false);
+        //currentUser.LookAt(cameraTargetPoint.position);
+    }
+
+    //два метода, вызывающие в зависимости от того, надо или нет использовать дочерний итем для текущего
+    public virtual void UseAsParent(UsableItem _usedChildItem)
+    {
+        _usedChildItem.Use(currentUser);
+    }
+    public virtual void UseIndividual()
+    {
         currentCamera = FindObjectOfType<CameraScript>();
         currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false);
         currentUser.LookAt(cameraTargetPoint.position);
-        if (childToUse != null)
-        {
-            childToUse.Use(user);
-            childToUse = null;
-        }
     }
 
     public virtual void StopUse()
     {
         currentCamera.SetCameraTarget();
+        usedChildItem = null;
         currentUser = null;
         currentCamera = null;
+    }
+    public void StopUseChild()
+    {
+        usedChildItem = null;
     }
     
     public bool CanStopManualy()
     {
-        if (canStopManualy)
+        if (usedChildItem != null)
         {
-            StopUse();
-            return true;
+            if (usedChildItem.CanStopManualy() && canStopManualy)
+            {
+                StopUse();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else return false;
+        else
+        {
+            if (canStopManualy)
+            {
+                StopUse();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public bool IsCanUsed(Vector3 userPosition)
@@ -82,6 +118,10 @@ public class UsableItem : MonoBehaviour
         }
     }
 
+    public float SetItemTreshold()
+    {
+        return treshold;
+    }
     public Vector3 UsePoint()
     {
         return usePoint.position;
