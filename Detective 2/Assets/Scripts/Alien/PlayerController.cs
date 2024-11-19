@@ -19,10 +19,12 @@ using UnityEngine.EventSystems;
 public class PlayerController : MonoBehaviour
 {
     private AlienBehavoiur player;
+    private BaseUIBehavoiur UIBehavoiur;
 
     private void Start()
     {
         player = GetComponent<AlienBehavoiur>();
+        UIBehavoiur = FindObjectOfType<BaseUIBehavoiur>();
     }
 
     public void MouseClick()
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
                 if (clickedGO.GetComponent<UsableItem>())
                 {
                     player.UseItem(clickedGO.GetComponent<UsableItem>());
+                    //UIBehavoiur.ShowItemMenu(clickedGO.GetComponent<UsableItem>());
                 }
             }
         }
