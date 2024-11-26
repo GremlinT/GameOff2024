@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,12 +31,9 @@ public class BaseUIBehavoiur : MonoBehaviour
 
     public void ShowItemName(string displayedName)
     {
-        //if (currentItem == null)
-        //{
-            itemName.GetComponentInChildren<Text>().text = displayedName;
-            itemName.SetActive(true);
-            itemName.transform.position = Input.mousePosition + itemNameOffset;
-        //}
+        itemName.GetComponentInChildren<Text>().text = displayedName;
+        itemName.SetActive(true);
+        itemName.transform.position = Input.mousePosition + itemNameOffset;
     }
     public void HideItemName()
     {
@@ -70,27 +65,4 @@ public class BaseUIBehavoiur : MonoBehaviour
         World.SetPause();
         ShowPauseMenu(World.onPause);
     }
-
-    /*
-    private UsableItem currentItem;
-    public void ShowItemMenu(UsableItem selectetdItem)
-    {
-        currentItem = selectetdItem;
-        itemMenu.transform.position = Input.mousePosition;
-        HideItemName();
-        itemMenu.SetActive(true);
-    }
-    public void MakeOpinion()
-    {
-        Debug.Log(currentItem.MakeOpinion());
-        currentItem = null;
-        itemMenu.SetActive(false);
-    }
-    public void UseItem()
-    {
-        player.UseItem(currentItem);
-        currentItem = null;
-        itemMenu.SetActive(false);
-    }
-    */
 }

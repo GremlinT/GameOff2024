@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1517
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Game
   m_RootView: {fileID: 10}
   m_MinSize: {x: 875, y: 321}
   m_MaxSize: {x: 10000, y: 10000}
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 62
+  controlID: 141
   draggingID: 0
 --- !u!114 &8
 MonoBehaviour:
@@ -228,8 +228,8 @@ MonoBehaviour:
     y: 1239
     width: 1957
     height: 228
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -438,7 +438,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Alien
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -446,16 +446,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/Alien
+  - Assets/Scripts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: F:\Unity\Detective2new\Detective 2
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 8c6e0000
-    m_LastClickedID: 28300
-    m_ExpandedIDs: 00000000ce6c0000d06c0000866e000000ca9a3b
+    m_SelectedIDs: e26e0000
+    m_LastClickedID: 28386
+    m_ExpandedIDs: 000000001c6d00001e6d0000e26e000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -483,7 +483,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ce6c0000d06c0000
+    m_ExpandedIDs: 000000001c6d00001e6d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -514,15 +514,15 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c62300002cd10000c0e00000bae00000845b000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: NewGameButton
-      m_OriginalName: NewGameButton
+      m_Name: Doors
+      m_OriginalName: Doors
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 8592
+      m_UserData: 43550
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
@@ -580,7 +580,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 637
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -623,25 +623,25 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 2e220100
-      m_LastClickedID: 74286
-      m_ExpandedIDs: 4643feff5844feff3e47feff2248feff5867feff8cc4ffff2efbffff646a0000a06a0000d86a00000c6b0000146b0000306b0000586b00003c20010048210100522101002e220100
+      m_SelectedIDs: d64effff
+      m_LastClickedID: -45354
+      m_ExpandedIDs: ece2ffff12fbffff16fbffff1afbffff1efbffff22fbffff26fbffff2afbffff2efbffff4a6a0000a46a0000006b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Particle System
-        m_OriginalName: Particle System
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 74184
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 6}
+        m_ClientGUIView: {fileID: 2}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -966,9 +966,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 2.153401, y: 0.075099975, z: 3.1805162}
+    m_Target: {x: 0.04699999, y: 0.75, z: 0.20499998}
     speed: 2
-    m_Value: {x: 2.153401, y: 0.075099975, z: 3.1805162}
+    m_Value: {x: 0.04699999, y: 0.75, z: 0.20499998}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1014,13 +1014,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.35500425, y: 0.25407448, z: -0.10089183, w: 0.89400214}
+    m_Target: {x: 0.38383314, y: 0.41472638, z: -0.19880359, w: 0.8007192}
     speed: 2
-    m_Value: {x: 0.3541114, y: 0.25019744, z: -0.098918065, w: 0.8956682}
+    m_Value: {x: 0.38383314, y: 0.41472638, z: -0.19880359, w: 0.8007192}
   m_Size:
-    m_Target: 5.8712945
+    m_Target: 2.2917223
     speed: 2
-    m_Value: 4.975673
+    m_Value: 2.2917223
   m_Ortho:
     m_Target: 0
     speed: 2

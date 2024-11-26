@@ -64,12 +64,16 @@
     <Compile Include="Assets\Scripts\World.cs" />
     <Compile Include="Assets\Scripts\UsableItems\Cabinet.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraScript.cs" />
+    <Compile Include="Assets\Scripts\PickableItem.cs" />
     <Compile Include="Assets\Scripts\InputController.cs" />
+    <Compile Include="Assets\Scripts\PickableItems\DetectiveHat.cs" />
     <Compile Include="Assets\Scripts\UsableItems\Phone.cs" />
     <Compile Include="Assets\Scripts\UI\BaseUIBehavoiur.cs" />
+    <Compile Include="Assets\Scripts\Alien\InventorySystem.cs" />
     <Compile Include="Assets\Scripts\NewGameButton.cs" />
     <Compile Include="Assets\Scripts\UsableItems\Computer.cs" />
     <Compile Include="Assets\Scripts\Alien\AlienBehavoiur.cs" />
+    <Compile Include="Assets\Scripts\Doors.cs" />
     <Compile Include="Assets\Scripts\Alien\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UsableItems\TV.cs" />
     <Compile Include="Assets\Scripts\UsableItems\Table.cs" />

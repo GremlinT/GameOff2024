@@ -24,6 +24,7 @@ public class AlienBehavoiur : MonoBehaviour
     [SerializeField]
     private float standartTreshold;
     private float currentTreshold;
+    private InventorySystem invSys;
 
     private void Start()
     {
@@ -33,6 +34,7 @@ public class AlienBehavoiur : MonoBehaviour
         currentState = AlienStates.idle;
         currentMoveToPoint = Vector3.zero;
         currentTreshold = standartTreshold;
+        invSys = GetComponent<InventorySystem>();
     }
 
     //методы обработчики пользовательского ввода
@@ -168,6 +170,12 @@ public class AlienBehavoiur : MonoBehaviour
 
     //методы дл€ управлени€ действи€ми персонажа вне стейтмашины
     
+    public void TakeItem(PickableItem item)
+    {
+        invSys.AddItemToInventory(item);
+        if (item == currentItem) StopUseItem();
+    }
+
     //вращение в нужную сторону
     [SerializeField]
     private float rotateSpeed;

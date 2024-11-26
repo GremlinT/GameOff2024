@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UsableItem : MonoBehaviour
@@ -13,7 +11,9 @@ public class UsableItem : MonoBehaviour
     [field: SerializeField]
     protected bool canStopManualy;
     [SerializeField]
-    string basicInformation, opinionDiscription, dispalyedName;
+    private string basicInformation, opinionDiscription, dispalyedName;
+    
+    public int id;
     
     protected AlienBehavoiur currentUser;
     private CameraScript currentCamera;
@@ -27,6 +27,10 @@ public class UsableItem : MonoBehaviour
     //метод, который вызывется после клика на предмет и который на выходе дает куррент итем для игрока, а также фиксирует в итемах порядок их использования
     public UsableItem SetCurrentItem()
     {
+        if (usePoint != null)
+        {
+            usePoint.position = new Vector3(usePoint.position.x, 0f, usePoint.position.z);
+        }
         if (parentItem != null)
         {
             parentItem.usedChildItem = this;
@@ -47,11 +51,6 @@ public class UsableItem : MonoBehaviour
         baseUIBehavoiur.HideItemName();
         UseIndividual();
         if (usedChildItem != null) UseAsParent(usedChildItem);
-
-        //UIBehavoiur.HideItemName();
-        //currentCamera = FindObjectOfType<CameraScript>();
-        //currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false);
-        //currentUser.LookAt(cameraTargetPoint.position);
     }
 
     //два метода, вызывающие в зависимости от того, надо или нет использовать дочерний итем для текущего
