@@ -241,6 +241,7 @@ struct Binder_t91BFCE95A7057FADF4D8A1A342AFE52872246235;
 struct Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3;
 struct COMException_t5F7851B41A1B121A563AA1ACF64196EFF5FE8D64;
 struct Calendar_t0A117CC7532A54C17188C2EFEA1F79DB20DF3A3B;
+struct CallerFilePathAttribute_tD13D8EAC572E95B7402C8EC7664A47F168F7AFDE;
 struct CancellationTokenSource_tAAE1E0033BCFC233801F8CB4CED5C852B350CB7B;
 struct ClassInterfaceAttribute_t80A22EA49AEE8A331C5412515685CBE522A7FAB5;
 struct CodePageDataItem_t52460FA30AE37F4F26ACB81055E58002262F19F2;
@@ -1379,6 +1380,9 @@ struct Boolean_t09A6377A54BE2F9E6985A8149F19234FD7DDFE22
 struct Byte_t94D9231AC217BE4D2E004C4CD32DF6D099EA41A3 
 {
 	uint8_t ___m_value;
+};
+struct CallerFilePathAttribute_tD13D8EAC572E95B7402C8EC7664A47F168F7AFDE  : public Attribute_tFDA8EFEFB0711976D22474794576DAF28F7440AA
+{
 };
 struct CancellationToken_t51142D9C6D7C02D314DA34A6A7988C528992FFED 
 {
@@ -4203,6 +4207,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool IntPtr_op_Inequality_m90EFC9C4CAD9A33E30
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool GCHandle_get_IsAllocated_m241908103D8D867E11CCAB73C918729825E86843 (GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC* __this, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* GCHandle_GetTarget_mE0AF851834410E2AEA6285B2497751570236C794 (intptr_t ___0_handle, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* GCHandle_get_Target_m481F9508DA5E384D33CD1F4450060DC56BBD4CD5 (GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC* __this, const RuntimeMethod* method) ;
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GCHandle_set_Target_m1DB05E14910747D2A74ACEB4C48028C4AEBFCF3D (GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC* __this, RuntimeObject* ___0_value, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR intptr_t GCHandle_GetAddrOfPinnedObject_m5B9FCE4209FAFAA5850325CF49674E593ED6B189 (intptr_t ___0_handle, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR intptr_t IntPtr_op_Explicit_m931A344F16D4C65EFB0B492EB07C7A82AF0B9FA1 (int32_t ___0_value, const RuntimeMethod* method) ;
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool IntPtr_op_Equality_m7D9CDCDE9DC2A0C2C614633F4921E90187FAB271 (intptr_t ___0_value1, intptr_t ___1_value2, const RuntimeMethod* method) ;
@@ -15046,6 +15051,24 @@ IL2CPP_EXTERN_C  RuntimeObject* GCHandle_get_Target_m481F9508DA5E384D33CD1F44500
 	_returnValue = GCHandle_get_Target_m481F9508DA5E384D33CD1F4450060DC56BBD4CD5(_thisAdjusted, method);
 	return _returnValue;
 }
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GCHandle_set_Target_m1DB05E14910747D2A74ACEB4C48028C4AEBFCF3D (GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC* __this, RuntimeObject* ___0_value, const RuntimeMethod* method) 
+{
+	{
+		RuntimeObject* L_0 = ___0_value;
+		intptr_t L_1 = __this->___handle;
+		intptr_t L_2;
+		L_2 = GCHandle_GetTargetHandle_mE33A9DC8A8FA880F9CAA057300E28BC8AE743CED(L_0, L_1, (-1), NULL);
+		__this->___handle = L_2;
+		return;
+	}
+}
+IL2CPP_EXTERN_C  void GCHandle_set_Target_m1DB05E14910747D2A74ACEB4C48028C4AEBFCF3D_AdjustorThunk (RuntimeObject* __this, RuntimeObject* ___0_value, const RuntimeMethod* method)
+{
+	GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC* _thisAdjusted;
+	int32_t _offset = 1;
+	_thisAdjusted = reinterpret_cast<GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC*>(__this + _offset);
+	GCHandle_set_Target_m1DB05E14910747D2A74ACEB4C48028C4AEBFCF3D(_thisAdjusted, ___0_value, method);
+}
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR intptr_t GCHandle_AddrOfPinnedObject_m9C047E154D6F0FE66BE003AB99F0B67A2CA953A6 (GCHandle_tC44F6F72EE68BD4CFABA24309DA7A179D41127DC* __this, const RuntimeMethod* method) 
 {
 	intptr_t G_B2_0;
@@ -15535,6 +15558,12 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Marshal_PtrToStringAnsi_m8DF88D9F22
 	typedef String_t* (*Marshal_PtrToStringAnsi_m8DF88D9F22FCF791C538A36C9233B3882F579B4A_ftn) (intptr_t);
 	using namespace il2cpp::icalls;
 	return ((Marshal_PtrToStringAnsi_m8DF88D9F22FCF791C538A36C9233B3882F579B4A_ftn)mscorlib::System::Runtime::InteropServices::Marshal::PtrToStringAnsi_mscorlib_System_String_mscorlib_System_IntPtr) (___0_ptr);
+}
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t Marshal_SizeOf_mED64846722033D6F60C2973CA604B7C2D7D4A1B7 (Type_t* ___0_t, const RuntimeMethod* method) 
+{
+	typedef int32_t (*Marshal_SizeOf_mED64846722033D6F60C2973CA604B7C2D7D4A1B7_ftn) (Type_t*);
+	using namespace il2cpp::icalls;
+	return ((Marshal_SizeOf_mED64846722033D6F60C2973CA604B7C2D7D4A1B7_ftn)mscorlib::System::Runtime::InteropServices::Marshal::SizeOf) (___0_t);
 }
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Marshal_StructureToPtr_mA1B296E1739D0481FACE3D9B43D94FF86091DD4E (RuntimeObject* ___0_structure, intptr_t ___1_ptr, bool ___2_fDeleteOld, const RuntimeMethod* method) 
 {
@@ -16305,6 +16334,21 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void AsyncStateMachineAttribute__ctor_m542251
 	{
 		Type_t* L_0 = ___0_stateMachineType;
 		StateMachineAttribute__ctor_m6BB447A85F13880965BFB0A3037D116765F465F1(__this, L_0, NULL);
+		return;
+	}
+}
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winvalid-offsetof"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#endif
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CallerFilePathAttribute__ctor_m798D631BBE03A4DC2300CFDE1FB6EC125F2CCE24 (CallerFilePathAttribute_tD13D8EAC572E95B7402C8EC7664A47F168F7AFDE* __this, const RuntimeMethod* method) 
+{
+	{
+		Attribute__ctor_m79ED1BF1EE36D1E417BA89A0D9F91F8AAD8D19E2(__this, NULL);
 		return;
 	}
 }

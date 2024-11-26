@@ -6,6 +6,8 @@ public class InputController : MonoBehaviour
 {
     [SerializeField]
     private PlayerController playerController;
+    [SerializeField]
+    private BaseUIBehavoiur baseUIBehavoiur;
     
     [SerializeField]
     private KeyCode pauseKey;
@@ -15,7 +17,8 @@ public class InputController : MonoBehaviour
         if (Input.GetKeyDown(pauseKey))
         {
             World.onPause = !World.onPause;
-            World.SetPause(World.onPause);
+            World.SetPause();
+            baseUIBehavoiur.ShowPauseMenu(World.onPause);
         }
 
         if (!World.onPause)

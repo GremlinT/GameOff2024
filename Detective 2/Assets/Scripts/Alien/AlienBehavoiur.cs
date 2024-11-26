@@ -18,6 +18,8 @@ public class AlienBehavoiur : MonoBehaviour
     [SerializeField]
     private UsableItem currentItem;
     [SerializeField]
+    private UsableItem newPlanedItem;
+    [SerializeField]
     private Vector3 currentMoveToPoint;
     [SerializeField]
     private float standartTreshold;
@@ -30,6 +32,7 @@ public class AlienBehavoiur : MonoBehaviour
         TR = transform;
         currentState = AlienStates.idle;
         currentMoveToPoint = Vector3.zero;
+        currentTreshold = standartTreshold;
     }
 
     //методы обработчики пользовательского ввода
@@ -44,14 +47,26 @@ public class AlienBehavoiur : MonoBehaviour
         if (currentItem == null)
         {
             currentItem = item.SetCurrentItem();
-            currentTreshold = currentItem.SetItemTreshold();
         }
         else
         {
             if (currentItem != item.SetCurrentItem())
             {
-                currentMoveToPoint = item.UsePoint();
-                currentTreshold = item.SetItemTreshold();
+                newPlanedItem = item.SetCurrentItem();
+            }
+            else
+            {
+                if (currentState == AlienStates.use)
+                {
+                    if (item != currentItem)
+                    {
+                        item.Use(this);
+                    }
+                    else
+                    {
+                        //итем это кликнутый итем но не родитель
+                    }
+                }
             }
         }
     }
@@ -73,11 +88,17 @@ public class AlienBehavoiur : MonoBehaviour
                     animator.SetBool("isWalking", true);
                     currentState = AlienStates.walking;
                 }
+                if (newPlanedItem != null)
+                {
+                    currentItem = newPlanedItem;
+                    newPlanedItem = null;
+                }
                 if (currentItem != null)
                 {
                     if (!currentItem.IsCanUsed(TR.position))
                     {
                         currentMoveToPoint = currentItem.UsePoint();
+                        currentTreshold = currentItem.SetItemTreshold();
                     }
                     else
                     {
@@ -89,9 +110,17 @@ public class AlienBehavoiur : MonoBehaviour
                 }
                 break;
             case AlienStates.walking:
+                if (newPlanedItem != null)
+                {
+                    currentItem = newPlanedItem;
+                    newPlanedItem = null;
+                    currentMoveToPoint = currentItem.UsePoint();
+                    currentTreshold = currentItem.SetItemTreshold();
+                }
                 if (currentItem != null && currentMoveToPoint != currentItem.UsePoint())
                 {
                     currentMoveToPoint = currentItem.UsePoint();
+                    currentTreshold = currentItem.SetItemTreshold();
                 }
                 if (currentMoveToPoint != agent.destination)
                 {
@@ -106,16 +135,9 @@ public class AlienBehavoiur : MonoBehaviour
                 break;
             case AlienStates.use:
                 Rotating();
-                if (currentMoveToPoint != Vector3.zero)
+                if (currentMoveToPoint != Vector3.zero || newPlanedItem != null)
                 {
-                    if (currentItem.CanStopManualy())
-                    {
-                        ClearItem();
-                    }
-                    else
-                    {
-                        currentMoveToPoint = Vector3.zero;
-                    }
+                    if (!StopUseItem()) currentMoveToPoint = Vector3.zero;
                 }
                 if (currentItem == null)
                 {
@@ -126,6 +148,19 @@ public class AlienBehavoiur : MonoBehaviour
         }
     }
 
+    public bool StopUseItem()
+    {
+        if (currentItem.CanStopManualy())
+        {
+            ClearItem();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     private void ClearItem()
     {
         currentItem = null;

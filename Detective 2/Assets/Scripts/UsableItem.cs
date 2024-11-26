@@ -17,7 +17,7 @@ public class UsableItem : MonoBehaviour
     
     protected AlienBehavoiur currentUser;
     private CameraScript currentCamera;
-    private BaseUIBehavoiur UIBehavoiur;
+    protected BaseUIBehavoiur baseUIBehavoiur;
 
     [SerializeField]
     protected UsableItem parentItem;
@@ -37,14 +37,14 @@ public class UsableItem : MonoBehaviour
 
     public void SetUIBehavoiur(BaseUIBehavoiur _UIBehavoiur)
     {
-        UIBehavoiur = _UIBehavoiur;
+        baseUIBehavoiur = _UIBehavoiur;
     }
 
     //в use надо вызывать два метода ниже в зависимости от того есть или нет необходимость использовать дочерний объект 
     public virtual void Use(AlienBehavoiur user)
     {
         currentUser = user;
-        UIBehavoiur.HideItemName();
+        baseUIBehavoiur.HideItemName();
         UseIndividual();
         if (usedChildItem != null) UseAsParent(usedChildItem);
 
@@ -62,7 +62,7 @@ public class UsableItem : MonoBehaviour
     public virtual void UseIndividual()
     {
         currentCamera = FindObjectOfType<CameraScript>();
-        currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false);
+        currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false); //камера фиксирует относительный вектор при повторном юзе, надо подумать и попрпавить
         currentUser.LookAt(cameraTargetPoint.position);
     }
 
@@ -135,10 +135,10 @@ public class UsableItem : MonoBehaviour
     private void OnMouseOver()
     {
         if (currentUser == null)
-        UIBehavoiur.ShowItemName(dispalyedName);
+            baseUIBehavoiur.ShowItemName(dispalyedName);
     }
     private void OnMouseExit()
     {
-        UIBehavoiur.HideItemName();
+        baseUIBehavoiur.HideItemName();
     }
 }

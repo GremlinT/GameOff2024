@@ -13,6 +13,12 @@ public class BaseUIBehavoiur : MonoBehaviour
     [SerializeField]
     private GameObject itemMenu;
 
+    [SerializeField]
+    private GameObject dialogPanel;
+
+    [SerializeField]
+    private GameObject pauseMenu;
+
     private AlienBehavoiur player;
 
     private void Awake()
@@ -38,6 +44,33 @@ public class BaseUIBehavoiur : MonoBehaviour
     {
         itemName.SetActive(false);
     }
+    
+    public void ShowDialog(string dialog)
+    {
+        dialogPanel.SetActive(true);
+        dialogPanel.GetComponentInChildren<Text>().text = dialog;
+    }
+    public void HideDialog()
+    {
+        dialogPanel.SetActive(false);
+    }
+
+    public void ShowPauseMenu(bool isShown)
+    {
+        pauseMenu.SetActive(isShown);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+    public void ResumeGame()
+    {
+        World.onPause = !World.onPause;
+        World.SetPause();
+        ShowPauseMenu(World.onPause);
+    }
+
     /*
     private UsableItem currentItem;
     public void ShowItemMenu(UsableItem selectetdItem)

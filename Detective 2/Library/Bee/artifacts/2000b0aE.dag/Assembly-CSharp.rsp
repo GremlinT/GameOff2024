@@ -360,6 +360,7 @@
 "Assets/Scripts/UI/BaseUIBehavoiur.cs"
 "Assets/Scripts/UsableItem.cs"
 "Assets/Scripts/UsableItems/Cabinet.cs"
+"Assets/Scripts/UsableItems/Computer.cs"
 "Assets/Scripts/UsableItems/Phone.cs"
 "Assets/Scripts/UsableItems/Table.cs"
 "Assets/Scripts/UsableItems/TV.cs"

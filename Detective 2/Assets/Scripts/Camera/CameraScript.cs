@@ -19,6 +19,7 @@ public class CameraScript : MonoBehaviour
     
     [SerializeField]
     private Vector3 baseCamerRelativeVector;
+    [SerializeField]
     private Vector3 cameraRelativeVector;
 
     private bool isFreeLook;
