@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UsableItem : MonoBehaviour
@@ -13,11 +11,13 @@ public class UsableItem : MonoBehaviour
     [field: SerializeField]
     protected bool canStopManualy;
     [SerializeField]
-    string basicInformation, opinionDiscription, dispalyedName;
+    private string basicInformation, opinionDiscription, dispalyedName;
+    
+    public int id;
     
     protected AlienBehavoiur currentUser;
-    private CameraScript currentCamera;
-    private BaseUIBehavoiur UIBehavoiur;
+    protected CameraScript currentCamera;
+    protected BaseUIBehavoiur baseUIBehavoiur;
 
     [SerializeField]
     protected UsableItem parentItem;
@@ -27,6 +27,10 @@ public class UsableItem : MonoBehaviour
     //метод, который вызывется после клика на предмет и который на выходе дает куррент итем для игрока, а также фиксирует в итемах порядок их использования
     public UsableItem SetCurrentItem()
     {
+        if (usePoint != null)
+        {
+            usePoint.position = new Vector3(usePoint.position.x, 0f, usePoint.position.z);
+        }
         if (parentItem != null)
         {
             parentItem.usedChildItem = this;
@@ -37,21 +41,16 @@ public class UsableItem : MonoBehaviour
 
     public void SetUIBehavoiur(BaseUIBehavoiur _UIBehavoiur)
     {
-        UIBehavoiur = _UIBehavoiur;
+        baseUIBehavoiur = _UIBehavoiur;
     }
 
     //в use надо вызывать два метода ниже в зависимости от того есть или нет необходимость использовать дочерний объект 
     public virtual void Use(AlienBehavoiur user)
     {
         currentUser = user;
-        UIBehavoiur.HideItemName();
+        baseUIBehavoiur.HideItemName();
         UseIndividual();
         if (usedChildItem != null) UseAsParent(usedChildItem);
-
-        //UIBehavoiur.HideItemName();
-        //currentCamera = FindObjectOfType<CameraScript>();
-        //currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false);
-        //currentUser.LookAt(cameraTargetPoint.position);
     }
 
     //два метода, вызывающие в зависимости от того, надо или нет использовать дочерний итем для текущего
@@ -135,10 +134,10 @@ public class UsableItem : MonoBehaviour
     private void OnMouseOver()
     {
         if (currentUser == null)
-        UIBehavoiur.ShowItemName(dispalyedName);
+            baseUIBehavoiur.ShowItemName(dispalyedName);
     }
     private void OnMouseExit()
     {
-        UIBehavoiur.HideItemName();
+        baseUIBehavoiur.HideItemName();
     }
 }

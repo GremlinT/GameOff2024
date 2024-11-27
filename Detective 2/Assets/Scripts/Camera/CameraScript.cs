@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CameraScript : MonoBehaviour
 {
@@ -19,6 +15,7 @@ public class CameraScript : MonoBehaviour
     
     [SerializeField]
     private Vector3 baseCamerRelativeVector;
+    [SerializeField]
     private Vector3 cameraRelativeVector;
 
     private bool isFreeLook;

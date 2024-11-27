@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public static class World
 {
+    public static bool knowNews; //мировые события, от которых зависит дальнешее повествование
+
     public static bool onPause;
 
-    public static void SetPause(bool isPaused)
+    public static void SetPause()
     {
         ParticleSystem[] sceneParticleSystems = Object.FindObjectsByType<ParticleSystem>(FindObjectsSortMode.None);
         Animator[] sceneAnimators = Object.FindObjectsByType<Animator>(FindObjectsSortMode.None);
         NavMeshAgent[] sceneNavMeshAgents = Object.FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
-        switch (isPaused)
+        switch (onPause)
         {
             case true:
                 foreach (ParticleSystem _ps in sceneParticleSystems)
@@ -25,7 +25,8 @@ public static class World
                 }
                 foreach (NavMeshAgent _nma in sceneNavMeshAgents)
                 {
-                    _nma.isStopped = true;
+                    if (_nma.enabled)
+                        _nma.isStopped = true;
                 }
                 break;
             case false:
@@ -39,7 +40,8 @@ public static class World
                 }
                 foreach (NavMeshAgent _nma in sceneNavMeshAgents)
                 {
-                    _nma.isStopped = false;
+                    if (_nma.enabled)
+                        _nma.isStopped = false;
                 }
                 break;
         }

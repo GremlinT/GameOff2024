@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +10,12 @@ public class BaseUIBehavoiur : MonoBehaviour
 
     [SerializeField]
     private GameObject itemMenu;
+
+    [SerializeField]
+    private GameObject dialogPanel;
+
+    [SerializeField]
+    private GameObject pauseMenu;
 
     private AlienBehavoiur player;
 
@@ -27,37 +31,38 @@ public class BaseUIBehavoiur : MonoBehaviour
 
     public void ShowItemName(string displayedName)
     {
-        //if (currentItem == null)
-        //{
-            itemName.GetComponentInChildren<Text>().text = displayedName;
-            itemName.SetActive(true);
-            itemName.transform.position = Input.mousePosition + itemNameOffset;
-        //}
+        itemName.GetComponentInChildren<Text>().text = displayedName;
+        itemName.SetActive(true);
+        itemName.transform.position = Input.mousePosition + itemNameOffset;
     }
     public void HideItemName()
     {
         itemName.SetActive(false);
     }
-    /*
-    private UsableItem currentItem;
-    public void ShowItemMenu(UsableItem selectetdItem)
+    
+    public void ShowDialog(string dialog)
     {
-        currentItem = selectetdItem;
-        itemMenu.transform.position = Input.mousePosition;
-        HideItemName();
-        itemMenu.SetActive(true);
+        dialogPanel.SetActive(true);
+        dialogPanel.GetComponentInChildren<Text>().text = dialog;
     }
-    public void MakeOpinion()
+    public void HideDialog()
     {
-        Debug.Log(currentItem.MakeOpinion());
-        currentItem = null;
-        itemMenu.SetActive(false);
+        dialogPanel.SetActive(false);
     }
-    public void UseItem()
+
+    public void ShowPauseMenu(bool isShown)
     {
-        player.UseItem(currentItem);
-        currentItem = null;
-        itemMenu.SetActive(false);
+        pauseMenu.SetActive(isShown);
     }
-    */
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+    public void ResumeGame()
+    {
+        World.onPause = !World.onPause;
+        World.SetPause();
+        ShowPauseMenu(World.onPause);
+    }
 }
