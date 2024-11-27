@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -137,6 +138,7 @@ public class AlienBehavoiur : MonoBehaviour
                 break;
             case AlienStates.use:
                 Rotating();
+                MovingTo();
                 if (currentMoveToPoint != Vector3.zero || newPlanedItem != null)
                 {
                     if (!StopUseItem()) currentMoveToPoint = Vector3.zero;
@@ -199,6 +201,48 @@ public class AlienBehavoiur : MonoBehaviour
                 lookAtPoint = Vector3.zero;
                 isRotating = false;
             } 
+        }
+    }
+
+    private Vector3[] moveToByUsibleItemPosition;
+    private bool isMoving;
+    private int currentPathPoint;
+    public void MoveToByUsableItem(Vector3 targetPosition)
+    {
+        moveToByUsibleItemPosition[0] = targetPosition;
+        isMoving = true;
+        animator.SetBool("isWalking", true);
+        currentPathPoint = 0;
+    }
+    public void MoveToByUsableItem(Vector3[] targetPositions)
+    {
+        moveToByUsibleItemPosition = targetPositions;
+        isMoving = true;
+        animator.SetBool("isWalking", true);
+        currentPathPoint = 0;
+    }
+    private void MovingTo()
+    {
+        if (isMoving)
+        {
+            if (Vector3.Distance(TR.position, moveToByUsibleItemPosition[currentPathPoint]) > 0.1f)
+            {
+                TR.position = Vector3.Lerp(TR.position, moveToByUsibleItemPosition[currentPathPoint], Time.deltaTime * agent.speed);
+            }
+            else
+            {
+                currentPathPoint++;
+                if (currentPathPoint < moveToByUsibleItemPosition.Length)
+                {
+                    return;
+                }
+                else
+                {
+                    isMoving = false;
+                    animator.SetBool("isWalking", false);
+                    currentPathPoint = 0;
+                }
+            }
         }
     }
 

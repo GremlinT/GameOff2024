@@ -16,7 +16,7 @@ public class UsableItem : MonoBehaviour
     public int id;
     
     protected AlienBehavoiur currentUser;
-    private CameraScript currentCamera;
+    protected CameraScript currentCamera;
     protected BaseUIBehavoiur baseUIBehavoiur;
 
     [SerializeField]
@@ -61,7 +61,7 @@ public class UsableItem : MonoBehaviour
     public virtual void UseIndividual()
     {
         currentCamera = FindObjectOfType<CameraScript>();
-        currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false); //камера фиксирует относительный вектор при повторном юзе, надо подумать и попрпавить
+        currentCamera.SetCameraTarget(cameraTargetPoint, (cameraPoint.position - cameraTargetPoint.position), false);
         currentUser.LookAt(cameraTargetPoint.position);
     }
 

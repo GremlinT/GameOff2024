@@ -37,7 +37,7 @@ public class Doors : MonoBehaviour
         {
             foreach (var alien in allAliens)
             {
-                if (Vector3.Distance(doorTR.position, alien.transform.position) < openDoorDistance)
+                if (Vector3.Distance(closeDoorPosition, alien.transform.position) < openDoorDistance)
                 {
                     if (!isOpen)
                     {

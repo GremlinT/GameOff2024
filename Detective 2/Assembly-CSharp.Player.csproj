@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\PickableItem.cs" />
     <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\PickableItems\DetectiveHat.cs" />
+    <Compile Include="Assets\Scripts\Spaceship\Spaceship.cs" />
     <Compile Include="Assets\Scripts\UsableItems\Phone.cs" />
     <Compile Include="Assets\Scripts\UI\BaseUIBehavoiur.cs" />
     <Compile Include="Assets\Scripts\Alien\InventorySystem.cs" />
