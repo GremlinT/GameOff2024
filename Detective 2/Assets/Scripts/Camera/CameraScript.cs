@@ -14,7 +14,8 @@ public class CameraScript : MonoBehaviour
     private Transform cameraTarget;
     
     [SerializeField]
-    private Vector3 baseCamerRelativeVector;
+    private Vector3 baseCameraRelativeVector;
+    private Vector3 currentCameraRelativeVector;
     [SerializeField]
     private Vector3 cameraRelativeVector;
 
@@ -24,7 +25,7 @@ public class CameraScript : MonoBehaviour
     private void Start()
     {
         TR = transform;
-        SetCameraTarget();
+        SetCameraTarget(true);
     }
 
     public void SetCameraTarget(Transform _cameraTarget, bool _isFreeLook)
@@ -36,15 +37,22 @@ public class CameraScript : MonoBehaviour
     public void SetCameraTarget(Transform _cameraTarget, Vector3 _cameraVector, bool _isFreeLook)
     {
         cameraTarget = _cameraTarget;
-        baseCamerRelativeVector = cameraRelativeVector;
+        currentCameraRelativeVector = cameraRelativeVector;
         cameraRelativeVector = _cameraVector;
         isFreeLook = _isFreeLook;
     }
 
-    public void SetCameraTarget()
+    public void SetCameraTarget(bool hasManyCameraChanges)
     {
         cameraTarget = playerCameraTarget;
-        cameraRelativeVector = baseCamerRelativeVector;
+        if (hasManyCameraChanges)
+        {
+            cameraRelativeVector = baseCameraRelativeVector;
+        }
+        else
+        {
+            cameraRelativeVector = currentCameraRelativeVector;
+        }
         isFreeLook = true;
     }
 

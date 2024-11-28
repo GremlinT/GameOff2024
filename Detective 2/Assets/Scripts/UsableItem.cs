@@ -67,7 +67,7 @@ public class UsableItem : MonoBehaviour
 
     public virtual void StopUse()
     {
-        currentCamera.SetCameraTarget();
+        currentCamera.SetCameraTarget(false);
         usedChildItem = null;
         currentUser = null;
         currentCamera = null;
@@ -77,7 +77,7 @@ public class UsableItem : MonoBehaviour
         usedChildItem = null;
     }
     
-    public bool CanStopManualy()
+    public virtual bool CanStopManualy()
     {
         if (usedChildItem != null)
         {

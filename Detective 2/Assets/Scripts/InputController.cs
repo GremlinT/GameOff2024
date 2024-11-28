@@ -21,7 +21,7 @@ public class InputController : MonoBehaviour
 
         if (!World.onPause)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 playerController.MouseClick();
             }

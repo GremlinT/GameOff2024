@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -204,7 +207,7 @@ public class AlienBehavoiur : MonoBehaviour
         }
     }
 
-    private Vector3[] moveToByUsibleItemPosition;
+    private List<Vector3> moveToByUsibleItemPosition = new List<Vector3>();
     private bool isMoving;
     private int currentPathPoint;
     public void MoveToByUsableItem(Vector3 targetPosition)
@@ -216,7 +219,7 @@ public class AlienBehavoiur : MonoBehaviour
     }
     public void MoveToByUsableItem(Vector3[] targetPositions)
     {
-        moveToByUsibleItemPosition = targetPositions;
+        moveToByUsibleItemPosition = targetPositions.ToList<Vector3>();
         isMoving = true;
         animator.SetBool("isWalking", true);
         currentPathPoint = 0;
@@ -231,13 +234,15 @@ public class AlienBehavoiur : MonoBehaviour
             }
             else
             {
+                TR.position = moveToByUsibleItemPosition[currentPathPoint];
                 currentPathPoint++;
-                if (currentPathPoint < moveToByUsibleItemPosition.Length)
+                if (currentPathPoint < moveToByUsibleItemPosition.Count)
                 {
                     return;
                 }
                 else
                 {
+                    moveToByUsibleItemPosition.Clear();
                     isMoving = false;
                     animator.SetBool("isWalking", false);
                     currentPathPoint = 0;
