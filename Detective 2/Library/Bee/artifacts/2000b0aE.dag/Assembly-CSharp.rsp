@@ -362,6 +362,8 @@
 "Assets/Scripts/PickableItem.cs"
 "Assets/Scripts/PickableItems/DetectiveHat.cs"
 "Assets/Scripts/Spaceship/Spaceship.cs"
+"Assets/Scripts/Spaceship/SpaceShipJumpMenuButton.cs"
+"Assets/Scripts/Spaceship/SpasechipPanelButton.cs"
 "Assets/Scripts/UI/BaseUIBehavoiur.cs"
 "Assets/Scripts/UsableItem.cs"
 "Assets/Scripts/UsableItems/Cabinet.cs"

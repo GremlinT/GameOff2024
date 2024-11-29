@@ -39,11 +39,13 @@ public class PlayerController : MonoBehaviour
                 if (clickedGO.GetComponent<WalkableSurface>())
                 {
                     player.MoveTo(hit.point);
+                    Debug.Log(clickedGO.name);
                 }
                 if (clickedGO.GetComponent<UsableItem>())
                 {
                     player.UseItem(clickedGO.GetComponent<UsableItem>());
                     //UIBehavoiur.ShowItemMenu(clickedGO.GetComponent<UsableItem>());
+                    Debug.Log("ui");
                 }
             }
         }

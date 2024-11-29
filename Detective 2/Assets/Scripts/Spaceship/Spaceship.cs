@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public enum SpasehipStates
+public enum SpaceshipStates
 {
     idleDoorClosed,
     idleDoorOpen,
@@ -12,10 +12,23 @@ public enum SpasehipStates
     userGoInside,
     userGoOut,
     readyToFly,
+    activate,
+    active,
     takeOff,
     landing,
+    deactivate,
     flyingToPoint,
     flyingToNewLocation
+}
+
+public enum SpaceshipButtons
+{
+    onOff,
+    jump,
+    map,
+    manual,
+    autoLanding,
+    autoTakeoff
 }
 
 public class Spaceship : UsableItem
@@ -37,33 +50,32 @@ public class Spaceship : UsableItem
 
     //оборудование
     [SerializeField]
+    private GameObject[] mainMonitors;
+    [SerializeField]
+    private GameObject[] mapProjecties;
+    [SerializeField]
+    private GameObject[] jumpMonitors;
+    [SerializeField]
+    private SpasechipPanelButton[] panelButtons;
+
+    /*[SerializeField]
     GameObject mainMonitor, leftMonitor, rightMonitor;
     [SerializeField]
     GameObject statusMonitorMain, statusMonitorMoveFirst, statusMonitorMoveSecond, statusMonitorRotate;
     [SerializeField]
-    Transform statusMonitorMoveTRFirst, statusMonitorMoveTRSecond, statusMonitorRotateTR;
+    Transform statusMonitorMoveTRFirst, statusMonitorMoveTRSecond, statusMonitorRotateTR;*/
 
     //состояния
     [SerializeField]
     private bool isUsed;
     [SerializeField]
     private bool doorsIsOpen;
-    /*[SerializeField]
-    private bool userGoInside;*/
     [SerializeField]
     private bool userInside;
-    /*[SerializeField]
-    private bool readyToFly;
-    [SerializeField]
-    private bool flying;
-    [SerializeField]
-    private bool landing;*/
     [SerializeField]
     private bool stopUsing;
-    [SerializeField]
-    /*private bool userGoOut;*/
 
-    private SpasehipStates currentState;
+    private SpaceshipStates currentState;
 
     //таймеры
     [SerializeField]
@@ -72,6 +84,11 @@ public class Spaceship : UsableItem
     //констрольные точки
     [SerializeField]
     private Transform[] pathPoints;
+
+    //контрольные точки космолета
+    private Vector3 activateVector;
+
+    private int jumpSceneNomber;
 
     private void Start()
     {
@@ -87,7 +104,14 @@ public class Spaceship : UsableItem
         downDoorOpenRotation = downDoor.localRotation;
         downDoor.localRotation = downDoorCloseRotation;
 
-        currentState = SpasehipStates.idleDoorClosed;
+        currentState = SpaceshipStates.idleDoorClosed;
+
+        activateVector = Vector3.up * 4f;
+    }
+
+    public void SetTargetForJump(int nomber)
+    {
+        jumpSceneNomber = nomber;
     }
 
     public override void UseIndividual()
@@ -96,22 +120,6 @@ public class Spaceship : UsableItem
         currentCamera = FindObjectOfType<CameraScript>();
     }
 
-    /*private void DoorControl(Transform door, Quaternion targetRotation, float angel, out bool doorState, bool open)
-    {
-        doorState = false;
-        if (door.localRotation != targetRotation)
-        {
-            door.Rotate(door.InverseTransformDirection(door.up), angel * Time.deltaTime);
-            if (open) doorState = false;
-            else doorState = true;
-            if (Quaternion.Angle(targetRotation, door.localRotation) < 5)
-            {
-                door.localRotation = targetRotation;
-                if (open) doorState = true;
-                else doorState = false;
-            }
-        }
-    }*/
     private bool DoorRotation(Transform door, Quaternion targetRotation, float angel)
     {
         if (door.localRotation != targetRotation)
@@ -168,25 +176,91 @@ public class Spaceship : UsableItem
         currentUser = null;
         currentCamera.SetCameraTarget(true);
         currentCamera = null;
-        currentState = SpasehipStates.doorsClosed;
+        currentState = SpaceshipStates.doorsClosed;
+    }
+
+    //методы кнопок панели
+    public void PanelButtonClick(SpasechipPanelButton clickedButton)
+    {
+        SpaceshipButtons clickedButtonType = clickedButton.GetButtonType();
+        switch (clickedButtonType)
+        {
+            case SpaceshipButtons.onOff:
+                if (!clickedButton.IsActive())
+                {
+                    clickedButton.ActivateButton(true);
+                    panelButtons[1].ButtonIsReadyOrNot(true);
+                    panelButtons[2].TurnButtonOnOff(true);
+                    panelButtons[4].ButtonIsReadyOrNot(true);
+                    panelButtons[5].TurnButtonOnOff(true);
+                    foreach (GameObject monitor in mainMonitors)
+                    {
+                        monitor.SetActive(true);
+                    }
+                    jumpMonitors[0].SetActive(true);
+                    MoveToPoint(TR.position + activateVector, 0.5f);//is temporary
+                    canStopManualy = false;
+                    currentUser.transform.parent = TR;
+                    currentCamera.transform.parent = TR;
+                    currentState = SpaceshipStates.flyingToPoint;
+                }
+                else
+                {
+                    RaycastHit hitPoint;
+                    if (Physics.Raycast(TR.position, -TR.up, out hitPoint, 10f))
+                    {
+                        clickedButton.ActivateButton(false);
+                        MoveToPoint(TR.position + (hitPoint.point - TR.position), 0.5f);
+                        currentState = SpaceshipStates.flyingToPoint;
+                    }
+                    else
+                    {
+                        Debug.Log("No place for land");
+                    }
+                }
+                break;
+            case SpaceshipButtons.jump:
+                Debug.Log("Jump button");
+                break;
+            case SpaceshipButtons.map:
+                Debug.Log("map button");
+                break;
+            case SpaceshipButtons.manual:
+                Debug.Log("manual button");
+                break;
+            case SpaceshipButtons.autoLanding:
+                Debug.Log("autoLanding button");
+                break;
+            case SpaceshipButtons.autoTakeoff:
+                Debug.Log("autoTakeoff button");
+                break;
+        }
+    }
+
+    private Vector3 moveToPoint;
+    private float moveSpeed;
+    private void MoveToPoint(Vector3 targetPoint, float currentSpeed)
+    {
+        moveToPoint = targetPoint;
+        moveSpeed = currentSpeed;
     }
 
     private void StateMashine()
     {
         switch (currentState)
         {
-            case SpasehipStates.idleDoorClosed:
+            case SpaceshipStates.idleDoorClosed:
                 if (isUsed)
                 {
-                    currentState = SpasehipStates.doorsOpened;
+                    currentState = SpaceshipStates.doorsOpened;
                 }
                 if (userInside)
                 {
                     canStopManualy = true;
-                    currentState = SpasehipStates.readyToFly;
+                    currentState = SpaceshipStates.readyToFly;
                 }
                 break;
-            case SpasehipStates.idleDoorOpen:
+            case SpaceshipStates.idleDoorOpen:
                 if (isUsed)
                 {
                     canStopManualy = false;
@@ -199,7 +273,7 @@ public class Spaceship : UsableItem
                     }
                     currentUser.MoveToByUsableItem(pathPointPositions);
                     
-                    currentState = SpasehipStates.userGoInside;
+                    currentState = SpaceshipStates.userGoInside;
                 }
                 if (userInside)
                 {
@@ -215,31 +289,31 @@ public class Spaceship : UsableItem
                     currentUser.MoveToByUsableItem(pathPointPositions);
                     currentCamera.SetCameraTarget(cameraTargetPoints[0], (cameraPoints[0].position - cameraTargetPoints[0].position), false);
                     
-                    currentState = SpasehipStates.userGoOut;
+                    currentState = SpaceshipStates.userGoOut;
                 }
                 break;
-            case SpasehipStates.doorsOpened:
+            case SpaceshipStates.doorsOpened:
                 DoorControl(true, out doorsIsOpen);
                 if (doorsIsOpen) 
-                    currentState = SpasehipStates.idleDoorOpen;
+                    currentState = SpaceshipStates.idleDoorOpen;
                 break;
-            case SpasehipStates.doorsClosed:
+            case SpaceshipStates.doorsClosed:
                 DoorControl(false, out doorsIsOpen);
                 if (!doorsIsOpen) 
-                    currentState = SpasehipStates.idleDoorClosed;
+                    currentState = SpaceshipStates.idleDoorClosed;
                 break;
-            case SpasehipStates.userGoInside:
+            case SpaceshipStates.userGoInside:
                 if (Vector3.Distance(currentUser.transform.position, pathPoints[pathPoints.Length - 1].position) < 0.1f)
                 {
                     userInside = true;
                     isUsed = false;
-                    currentUser.LookAt(mainMonitor.transform.position);
+                    currentUser.LookAt(mainMonitors[0].transform.position);
                     currentCamera.SetCameraTarget(cameraTargetPoints[1], (cameraPoints[1].position - cameraTargetPoints[1].position), false);
 
-                    currentState = SpasehipStates.doorsClosed;
+                    currentState = SpaceshipStates.doorsClosed;
                 }
                 break;
-            case SpasehipStates.userGoOut:
+            case SpaceshipStates.userGoOut:
                 if (Vector3.Distance(currentUser.transform.position, usePoint.position) < 0.1f)
                 {
                     userInside = false;
@@ -248,28 +322,67 @@ public class Spaceship : UsableItem
                     currentUser.StopUseItem();
                 }
                 break;
-            case SpasehipStates.readyToFly:
+            case SpaceshipStates.readyToFly:
                 if (stopUsing)
                 {
                     canStopManualy = false;
                     currentCamera.SetCameraTarget(cameraTargetPoints[0], (cameraPoints[1].position - cameraTargetPoints[0].position), false);
-                    currentState = SpasehipStates.doorsOpened;
+                    currentState = SpaceshipStates.doorsOpened;
                 }
                 break;
-            case SpasehipStates.takeOff:
+            case SpaceshipStates.activate:
+
                 break;
-            case SpasehipStates.landing:
+            case SpaceshipStates.active:
+                if (!panelButtons[0].IsActive())
+                {
+                    panelButtons[1].TurnButtonOnOff(false);
+                    panelButtons[2].TurnButtonOnOff(false);
+                    panelButtons[4].TurnButtonOnOff(false);
+                    panelButtons[5].TurnButtonOnOff(false);
+                    foreach (GameObject monitor in mainMonitors)
+                    {
+                        monitor.SetActive(false);
+                    }
+                    jumpMonitors[0].SetActive(false);
+                    canStopManualy = true;
+                    currentUser.transform.parent = null;
+                    currentCamera.transform.parent = null;
+                    currentState = SpaceshipStates.readyToFly;
+                }
                 break;
-            case SpasehipStates.flyingToPoint:
+            case SpaceshipStates.takeOff:
                 break;
-            case SpasehipStates.flyingToNewLocation:
+            case SpaceshipStates.landing:
+                break;
+            case SpaceshipStates.deactivate:
+                break;
+            case SpaceshipStates.flyingToPoint:
+                if (Vector3.Distance(TR.position, moveToPoint) < 0.3f)
+                {
+                    TR.position = moveToPoint;
+                    currentState = SpaceshipStates.active;
+                }
+                else
+                {
+                    TR.position = TR.position + (moveToPoint - TR.position) * moveSpeed * Time.deltaTime;
+                }
+                break;
+            case SpaceshipStates.flyingToNewLocation:
                 break;
             default:
                 break;
         }
     }
 
-    private void Update()
+    private void JumpMonitorsActivate(bool isActivate)
+    {
+        jumpMonitors[0].SetActive(isActivate);
+        if (World.hasInviteToClient) jumpMonitors[2].SetActive(true);
+        if (World.knowAboutBar) jumpMonitors[3].SetActive(true);
+        if (World.knowStationPosition) jumpMonitors[4].SetActive(true);
+    }
+    private void FixedUpdate()
     {
         StateMashine();
 

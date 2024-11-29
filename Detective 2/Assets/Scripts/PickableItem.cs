@@ -10,6 +10,9 @@ public class PickableItem : UsableItem
     [SerializeField]
     private Transform wearingPoint;
 
+    [SerializeField]
+    Collider itemCollider;
+
     public override void UseIndividual()
     {
         canStopManualy = true;
@@ -27,8 +30,10 @@ public class PickableItem : UsableItem
         }
         currentUser.TakeItem(this);
     }
+
     public override void StopUse()
     {
         currentUser = null;
+        itemCollider.enabled = false;
     }
 }

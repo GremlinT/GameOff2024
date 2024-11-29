@@ -4,6 +4,9 @@ using UnityEngine.AI;
 public static class World
 {
     public static bool knowNews; //мировые события, от которых зависит дальнешее повествование
+    public static bool hasInviteToClient;
+    public static bool knowAboutBar;
+    public static bool knowStationPosition;
 
     public static bool onPause;
 
