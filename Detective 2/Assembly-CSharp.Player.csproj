@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\Alien\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UsableItems\TV.cs" />
     <Compile Include="Assets\Scripts\UsableItems\Table.cs" />
+    <Compile Include="Assets\Scripts\SpaceStation.cs" />
     <Compile Include="Assets\Scripts\UsableItem.cs" />
   </ItemGroup>
   <ItemGroup>

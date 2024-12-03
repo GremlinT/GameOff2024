@@ -230,7 +230,9 @@ public class AlienBehavoiur : MonoBehaviour
         {
             if (Vector3.Distance(TR.position, moveToByUsibleItemPosition[currentPathPoint]) > 0.1f)
             {
-                TR.position = Vector3.Lerp(TR.position, moveToByUsibleItemPosition[currentPathPoint], Time.deltaTime * agent.speed);
+                //TR.position = Vector3.Lerp(TR.position, moveToByUsibleItemPosition[currentPathPoint], Time.deltaTime * agent.speed);
+                TR.position = TR.position + (moveToByUsibleItemPosition[currentPathPoint] - TR.position) * Time.deltaTime * agent.speed;
+                Debug.Log(agent.speed);
             }
             else
             {

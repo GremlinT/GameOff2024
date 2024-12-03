@@ -17,7 +17,7 @@ public class SpasechipPanelButton : MonoBehaviour
     private Material[] buttonMaterials;
 
     private MeshRenderer render;
-    private bool isActive;
+    private bool isActive, isReady;
 
     private void Start()
     {
@@ -29,7 +29,7 @@ public class SpasechipPanelButton : MonoBehaviour
 
     private void OnMouseDown()
     {
-        TR.localPosition = TR.localPosition + TR.up * -0.02f;
+        TR.localPosition = TR.localPosition + TR.forward * -0.02f;
         spaceship.PanelButtonClick(this);
     }
     private void OnMouseUp()
@@ -50,6 +50,10 @@ public class SpasechipPanelButton : MonoBehaviour
     {
         return isActive;
     }
+    public bool IsReady()
+    {
+        return isReady;
+    }
     public void TurnButtonOnOff(bool isOn)
     {
         if (isOn)
@@ -61,6 +65,8 @@ public class SpasechipPanelButton : MonoBehaviour
         {
             render.material = buttonMaterials[0];
             buttonProjectile.SetActive(false);
+            isActive = false;
+            isReady = false;
         }
     }
 
@@ -78,15 +84,17 @@ public class SpasechipPanelButton : MonoBehaviour
         }
         
     }
-    public void ButtonIsReadyOrNot(bool isReady)
+    public void ButtonIsReadyOrNot(bool _isReady)
     {
-        if (isReady)
+        if (_isReady)
         {
             render.material = buttonMaterials[2];
+            isReady = true;
         }
         else
         {
             render.material = buttonMaterials[1];
+            isReady = false;
         }
         
     }
