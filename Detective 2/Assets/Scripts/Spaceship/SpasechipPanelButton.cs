@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class SpasechipPanelButton : MonoBehaviour
 {
     private Transform TR;
@@ -17,6 +18,7 @@ public class SpasechipPanelButton : MonoBehaviour
     private Material[] buttonMaterials;
 
     private MeshRenderer render;
+    
     private bool isActive, isReady;
 
     private void Start()

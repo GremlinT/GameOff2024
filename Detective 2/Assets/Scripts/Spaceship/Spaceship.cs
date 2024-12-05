@@ -224,6 +224,7 @@ public class Spaceship : UsableItem
                     clickedButton.ActivateButton(true);
                     panelButtons[1].TurnButtonOnOff(true);
                     panelButtons[2].TurnButtonOnOff(true);
+                    panelButtons[3].TurnButtonOnOff(true);
                     panelButtons[4].TurnButtonOnOff(true);
                     panelButtons[5].TurnButtonOnOff(true);
                     foreach (GameObject monitor in mainMonitors)
@@ -276,6 +277,17 @@ public class Spaceship : UsableItem
                 break;
             case SpaceshipButtons.autoLanding: //авто-посадка - нижн€€ маленька€ кнопка
                 Debug.Log("autoLanding button");
+                if (clickedButton.IsReady())
+                {
+                    pathSpeed = 2f;
+                    spaceshipPathTransforms = station.SetPath(false).ToList();
+                    foreach (Transform point in spaceshipPathTransforms)
+                    {
+                        spaceshipPathPoints.Add(point.position);
+                    }
+                    currentState = SpaceshipStates.active;
+                    isInside = true;
+                }
                 break;
             case SpaceshipButtons.autoTakeoff: //авто-взлет - верх€€ малеьна€ кнопка
                 if (clickedButton.IsReady())
@@ -287,6 +299,7 @@ public class Spaceship : UsableItem
                         spaceshipPathPoints.Add(point.position);
                     }
                     currentState = SpaceshipStates.active;
+                    isInside = false;
                 }
                 break;
         }
@@ -349,6 +362,7 @@ public class Spaceship : UsableItem
     private void JumpMonitorsActivate(bool isActivate)
     {
         jumpMonitors[0].SetActive(isActivate);
+        jumpMonitors[1].SetActive(true);
         if (World.hasInviteToClient) jumpMonitors[2].SetActive(true);
         if (World.knowAboutBar) jumpMonitors[3].SetActive(true);
         if (World.knowStationPosition) jumpMonitors[4].SetActive(true);
@@ -463,38 +477,35 @@ public class Spaceship : UsableItem
             case SpaceshipStates.active: //активен (взлетел)
                 if (spaceshipPathPoints.Count > 0)
                 {
+                    panelButtons[2].ButtonIsReadyOrNot(false);
+                    panelButtons[3].ButtonIsReadyOrNot(false);
                     panelButtons[4].ButtonIsReadyOrNot(false);
+                    panelButtons[5].ButtonIsReadyOrNot(false);
                     MoveToPoint(spaceshipPathPoints[currentpathPoint], pathSpeed);
                     needRotation = true;
-                    rotationSpeed = Quaternion.Angle(spaceshipPathTransforms[currentpathPoint].rotation, TR.rotation) / Vector3.Distance(TR.position, spaceshipPathPoints[currentpathPoint]);
+                    float flyTime = Vector3.Distance(TR.position, spaceshipPathPoints[currentpathPoint]) / pathSpeed;
+                    rotationSpeed = Quaternion.Angle(spaceshipPathTransforms[currentpathPoint].rotation, TR.rotation) / flyTime;
                     currentState = SpaceshipStates.flyingToPoint;
                 }
                 else
                 {
                     if (!panelButtons[0].IsActive())
                     {
-                        timer -= Time.deltaTime;
-                        if (timer <= 0)
+                        panelButtons[0].ButtonIsReadyOrNot(true);
+                        panelButtons[1].TurnButtonOnOff(false);
+                        panelButtons[2].TurnButtonOnOff(false);
+                        panelButtons[3].TurnButtonOnOff(false);
+                        panelButtons[4].TurnButtonOnOff(false);
+                        panelButtons[5].TurnButtonOnOff(false);
+                        foreach (GameObject monitor in mainMonitors)
                         {
-                            panelButtons[0].ButtonIsReadyOrNot(true);
-                            panelButtons[1].TurnButtonOnOff(false);
-                            panelButtons[2].TurnButtonOnOff(false);
-                            panelButtons[4].TurnButtonOnOff(false);
-                            panelButtons[5].TurnButtonOnOff(false);
-                            foreach (GameObject monitor in mainMonitors)
-                            {
-                                monitor.SetActive(false);
-                            }
-                            JumpMonitorsActivate(false);
-                            canStopManualy = true;
-                            currentUser.transform.parent = null;
-                            currentCamera.transform.parent = null;
-                            currentState = SpaceshipStates.readyToFly;
+                            monitor.SetActive(false);
                         }
-                    }
-                    else
-                    {
-                        panelButtons[4].ButtonIsReadyOrNot(true);
+                        JumpMonitorsActivate(false);
+                        canStopManualy = true;
+                        currentUser.transform.parent = null;
+                        currentCamera.transform.parent = null;
+                        currentState = SpaceshipStates.readyToFly;
                     }
                 }
                 break;
@@ -507,21 +518,45 @@ public class Spaceship : UsableItem
             case SpaceshipStates.flyingToPoint: //полет в указанную точку
                 if (Vector3.Distance(TR.position, moveToPoint) < 0.1f)
                 {
-                    TR.position = moveToPoint;
                     currentpathPoint++;
                     if (currentpathPoint >= spaceshipPathPoints.Count)
                     {
+                        TR.position = moveToPoint;
                         spaceshipPathPoints.Clear();
                         spaceshipPathTransforms.Clear();
                         currentpathPoint = 0;
                         pathSpeed = 0;
+                        if (jumpSceneNomber != 0)
+                        {
+                            panelButtons[2].ButtonIsReadyOrNot(true);
+                        }
+                        panelButtons[3].ButtonIsReadyOrNot(true);
+                        if (isInside)
+                        {
+                            panelButtons[4].ButtonIsReadyOrNot(true);
+                            panelButtons[5].ButtonIsReadyOrNot(false);
+                        }
+                        else
+                        {
+                            panelButtons[4].ButtonIsReadyOrNot(false);
+                            if (station != null)
+                            {
+                                panelButtons[5].ButtonIsReadyOrNot(true);
+                            }
+                        }
                     }
-                    currentState = SpaceshipStates.active;
+                    else
+                    {
+                        MoveToPoint(spaceshipPathPoints[currentpathPoint], pathSpeed);
+                        needRotation = true;
+                        float flyTime = Vector3.Distance(TR.position, spaceshipPathPoints[currentpathPoint]) / pathSpeed;
+                        rotationSpeed = Quaternion.Angle(spaceshipPathTransforms[currentpathPoint].rotation, TR.rotation) / flyTime;
+                    }
                 }
                 else
                 {
                     RotateToPoint();
-                    TR.position = TR.position + (moveToPoint - TR.position) * moveSpeed * Time.deltaTime;
+                    TR.position = TR.position + (moveToPoint - TR.position).normalized * moveSpeed * Time.deltaTime;
                 }
                 break;
             case SpaceshipStates.flyingToNewLocation: //полет в новую локацию?
